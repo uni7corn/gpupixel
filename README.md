@@ -17,7 +17,8 @@
 ---
 
 
-> 👏🏻👏🏻 GPUPixel has added support for the **Windows** and **Linux** from [v1.1.0](https://github.com/pixpark/gpupixel/releases/tag/1.1.0). And now it is fully cross-platform supported: **iOS | Android | Mac | Win | Linux** 🎉🎉🎉 
+> 👏🏻👏🏻 GPUPixel has added support for the `Windows` and `Linux` from [v1.1.0](https://github.com/pixpark/gpupixel/releases/tag/v1.1.0). 
+> Now it is fully cross-platform supported: `iOS`, `Android`, `Mac`, `Win` and `Linux` 🎉🎉🎉 
 
 ## Introduction
 ⛰️ GPUPixel is a high-performance image and video AI beauty effect library written in C++11, Extremely easy to compile and integrate, with a very small library size.
