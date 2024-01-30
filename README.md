@@ -184,6 +184,17 @@ Refer to `examples/desktop`
 
 The compilation method is the same as compiling the library.
 
+```shell
+cd examples
+mkdir build
+cd build
+
+# Generate project
+cmake -G "MinGW Makefiles" ..
+
+# Build
+mingw32-make
+```
 ## 🏂 How to Use
 
 **Declear filters**
