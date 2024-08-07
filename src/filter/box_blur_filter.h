@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -12,8 +12,7 @@
 #include "box_mono_blur_filter.h"
 #include "filter_group.h"
 NS_GPUPIXEL_BEGIN
-
-class BoxBlurFilter : public FilterGroup {
+class GPUPIXEL_API BoxBlurFilter : public FilterGroup {
  public:
   virtual ~BoxBlurFilter();
 

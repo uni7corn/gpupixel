@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -16,7 +16,7 @@ NS_GPUPIXEL_BEGIN
 
 class _SobelEdgeDetectionFilter;
 
-class SobelEdgeDetectionFilter : public FilterGroup {
+class GPUPIXEL_API SobelEdgeDetectionFilter : public FilterGroup {
  public:
   static std::shared_ptr<SobelEdgeDetectionFilter> create();
   ~SobelEdgeDetectionFilter();
@@ -31,7 +31,7 @@ class SobelEdgeDetectionFilter : public FilterGroup {
   float _edgeStrength;
 };
 
-class _SobelEdgeDetectionFilter : public NearbySampling3x3Filter {
+class GPUPIXEL_API _SobelEdgeDetectionFilter : public NearbySampling3x3Filter {
  public:
   static std::shared_ptr<_SobelEdgeDetectionFilter> create();
   bool init();

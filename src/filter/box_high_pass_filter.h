@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -13,8 +13,7 @@
 #include "box_difference_filter.h"
 #include "filter_group.h"
 NS_GPUPIXEL_BEGIN
-
-class BoxHighPassFilter : public FilterGroup {
+class GPUPIXEL_API BoxHighPassFilter : public FilterGroup {
  public:
   static std::shared_ptr<BoxHighPassFilter> create();
   ~BoxHighPassFilter();

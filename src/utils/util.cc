@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -10,6 +10,7 @@
 #include <cstdarg>
 #if defined(GPUPIXEL_ANDROID)
 #include <android/log.h>
+#include "jni_helpers.h"
 #elif defined(GPUPIXEL_IOS)
 #import <Foundation/foundation.h>
 #import <UIKit/UIKit.h>
@@ -58,15 +59,23 @@
 
 NS_GPUPIXEL_BEGIN
 
+std::string Util::resourceRoot = "";
+
 std::string Util::getResourcePath(std::string name) {
-  #if defined(GPUPIXEL_IOS) || defined(GPUPIXEL_MAC)
+#if defined(GPUPIXEL_IOS) || defined(GPUPIXEL_MAC)
   NSString* oc_path = [ObjcHelper
       getResourcePath:[[NSString alloc] initWithUTF8String:name.c_str()]];
   std::string path = [oc_path UTF8String];
-  #else
-    std::string path = name;
-  #endif
+#elif defined(GPUPIXEL_ANDROID)
+  std::string path = getResourcePathJni(name);
+#else
+    std::string path = resourceRoot.empty() ? name : (resourceRoot + "/" + name);
+#endif
   return path;
+}
+
+void Util::setResourceRoot(std::string root) {
+    resourceRoot = root;
 }
 #if defined(GPUPIXEL_IOS) || defined(GPUPIXEL_MAC)
 std::string Util::getResourcePath(std::string bundle_name,
@@ -107,6 +116,40 @@ int vasprintf(char** strp, const char* fmt, va_list ap) {
 }
 #endif
 
+
+#if defined(GPUPIXEL_ANDROID)
+std::string Util::getResourcePathJni(std::string name) {
+  // Todo(Jeayo) @see https://developer.android.com/ndk/guides/image-decoder?hl=zh-cn
+  JavaVM *jvm = GetJVM();
+  JNIEnv *env = GetEnv(jvm);
+
+  // 定义类路径和方法签名
+  const char *className = "com/pixpark/gpupixel/GPUPixel";
+  const char *methodName = "getResource_path";
+  const char *methodSignature = "()Ljava/lang/String;";
+
+  // GPUPixel
+  jclass class_id = env->FindClass(className);
+  if (class_id == NULL) {
+    return NULL;
+  }
+
+  jmethodID mtd = env->GetStaticMethodID(class_id, methodName,
+                                         methodSignature);
+  if (mtd == NULL) {
+    return NULL;
+  }
+
+  // 调用createBitmap方法
+  jstring path = (jstring)env->CallStaticObjectMethod(class_id,
+                                                      mtd);
+
+  std::string str = env->GetStringUTFChars(path, nullptr);
+  env->DeleteLocalRef(class_id);
+  return str + "/" + name;
+}
+#endif
+
 std::string Util::str_format(const char* fmt, ...) {
   std::string strResult = "";
   if (NULL != fmt) {
@@ -141,7 +184,7 @@ int64_t Util::nowTimeMs() {
   return ts;
 }
 
-void Util::Log(const std::string& tag, const std::string& format, ...) {
+void Util::Log(const std::string& tag,std::string format, ...) {
   char buffer[10240];
   va_list args;
   va_start(args, format);

@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -11,7 +11,7 @@
 #include "gl_program.h"
 #include <functional>
 NS_GPUPIXEL_BEGIN
-class SourceRawDataInput : public Filter {
+class GPUPIXEL_API SourceRawDataInput : public Filter {
  public:
   ~SourceRawDataInput();
   static std::shared_ptr<SourceRawDataInput> create();

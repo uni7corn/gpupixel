@@ -1,17 +1,17 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
 #pragma once
 
 #include "filter.h"
+#include "face_detector.h"
 
 NS_GPUPIXEL_BEGIN
-
-class FaceReshapeFilter : public Filter {
+class GPUPIXEL_API FaceReshapeFilter : public Filter {
  public:
   static std::shared_ptr<FaceReshapeFilter> create();
   ~FaceReshapeFilter();
@@ -19,12 +19,9 @@ class FaceReshapeFilter : public Filter {
   virtual bool proceed(bool bUpdateTargets = true,
                        int64_t frameTime = 0) override;
 
-  void setLandmarks(const std::vector<float> landmarks);
-  void setHasFace(bool has_face);
-
   void setFaceSlimLevel(float level);
   void setEyeZoomLevel(float level);
-
+  void SetFaceLandmarks(std::vector<float> landmarks);
  protected:
   FaceReshapeFilter();
   float thinFaceDelta_ = 0;

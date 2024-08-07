@@ -8,26 +8,36 @@
 </p>
 
 <p align="center">
+  <a href="https://gpupixel.pixpark.net/guide/intro">Build</a>
+  <span> · </span>
+  <a href="https://reactnative.dev/docs/tutorial">Demo</a>
+  <span> · </span>
+  <a href="https://reactnative.dev/showcase">Integration</a>
+</p>
+
+<p align="center">
    <a href="https://github.com/pixpark/gpupixel/stargazers"><img alt="GPUPixel Stars" src="https://img.shields.io/github/stars/pixpark/gpupixel?style=social"/></a>
     <a href="https://github.com/pixpark/gpupixel/releases/latest"><img alt="GPUPixel Release" src="https://img.shields.io/github/v/release/pixpark/gpupixel"/></a>
     <a href="#"><img alt="GPUPixel Stars" src="https://img.shields.io/badge/Platform-iOS_%7C_Android_%7C_Mac_%7C_Win_%7C_Linux-red"/></a>
+     <a href="https://github.com/pixpark/gpupixel/actions/workflows/cmake-multi-platform.yml"><img src="https://github.com/pixpark/gpupixel/actions/workflows/cmake-multi-platform.yml/badge.svg"></a>
     <a href="https://github.com/pixpark/gpupixel/blob/main/LICENSE"><img alt="GPUPixel Stars" src="https://img.shields.io/github/license/pixpark/gpupixel"/></a>
+</p>
+
+<p align="center">
+<a href="https://trendshift.io/repositories/7103" target="_blank"><img src="https://trendshift.io/api/badge/repositories/7103" alt="pixpark%2Fgpupixel | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 </p>
 
 ---
 
-
-> 👏🏻👏🏻 GPUPixel has added support for the `Windows` and `Linux` from [v1.1.0](https://github.com/pixpark/gpupixel/releases/tag/v1.1.0). 
-> Now it is fully cross-platform supported: `iOS`, `Android`, `Mac`, `Win` and `Linux` 🎉🎉🎉 
+> Welcome to join us to make GPUPixel better by participating [discussions](https://github.com/pixpark/gpupixel/discussions), opening [issues](https://github.com/pixpark/gpupixel/issues/new/choose), submitting [PRs](https://github.com/pixpark/gpupixel/pulls) 👏.
 
 ## Introduction
+
 ⛰️ GPUPixel is a real-time, high-performance image and video filter library, extremely easy to compile and integrate with  small library size.
 
 🔑 GPUPixel  is written in C++11 and is based on OpenGL/ES, incorporating a built-in beauty face filter that achieves commercial-grade beauty effects.
 
 🔌 GPUPixel supports platforms including `iOS`, `Android`, `Mac`, `Win` and `Linux`. It can theoretically be ported to any platform that supports OpenGL/ES.
-
->💡 The face key points detection currently utilizes the [Face++](https://www.faceplusplus.com.cn/) library, but it will be replaced with either **[VNN](https://github.com/joyycom/VNN)** or **[NCNN](https://github.com/Tencent/ncnn)** in the future.
 
 ## Effects Preview
 
@@ -43,7 +53,7 @@
 ## Architecture
 ![](./docs/image/arch-en.jpg)
 
-## Features Compared
+## Features
 
 This table compares the features supported by **GPUPixel** and **GPUImage** and **Android-GPUImage**:
 
@@ -59,7 +69,7 @@ This table compares the features supported by **GPUPixel** and **GPUImage** and 
 | Lipstick Filter       |                        ✅                        |                         ❌                          |                              ❌                               |
 | Blush Filter          |                        ✅                        |                         ❌                          |                              ❌                               |
 | More Build in Filter  |                        ✅                        |                         ✅                          |                              ✅                               |
-| 🎥 **Input Formats:**  |                                                 |                                                    |                                                              |
+| 🎬 **Input Formats:**  |                                                 |                                                    |                                                              |
 | YUV420P(I420)         |                        ✅                        |                         ❌                          |                              ❌                               |
 | RGBA                  |                        ✅                        |                         ✅                          |                              ✅                               |
 | JPEG                  |                        ✅                        |                         ✅                          |                              ✅                               |
@@ -83,7 +93,7 @@ This table compares the features supported by **GPUPixel** and **GPUImage** and 
 |    **CPU**     |    5%     |    5%    |    3%    |    3%     |      3%       |
 | **Time Taken** |   10ms    |   4ms    |   3ms    |    3ms    |      3ms      |
 ### Android
-|     -      | Xiaomi 10 | Huawei Meta30 | Vivo  | SAMSUNG | Google Pixel |
+|     -      | Xiaomi 10 | Huawei Mate30 | Vivo  | SAMSUNG | Google Pixel |
 | :--------: | :-------: | :-----------: | :---: | :-----: | :----------: |
 |    CPU     |    3%     |      5%       |   -   |    -    |      -       |
 | Time Taken |    6ms    |      5ms      |   -   |    -    |      -       |
@@ -101,188 +111,23 @@ This table compares the features supported by **GPUPixel** and **GPUImage** and 
 
 ![](./docs/image/give-star.gif)
 
-## Quick Start
-### 📱 How to Build
-Compile using CMake frome v1.1.0. Please search for instructions on how to install and configure CMake. 
 
-The generated libraries and app will be located in the "output" directory of the project's root folder.
 
-### iOS
-```shell
-cd src
-mkdir build
-cd build
+## Getting Started
 
-# Generate project
-## for iOS arm64
-cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../../toolchain/ios.toolchain.cmake -DPLATFORM=OS64 ..
- 
-# Build
-cmake --build . --config Debug
-```
-### Mac
+See the doc: [Introduction](https://gpupixel.pixpark.net/guide/build) | [Build](https://gpupixel.pixpark.net/guide/build) | [Examples](https://gpupixel.pixpark.net/guide/demo) | [Integrated](https://gpupixel.pixpark.net/guide/integrated)
 
-```shell
-cd src
-mkdir build
-cd build
+## Contributing
 
-# Generate project
-## for Mac Apple Silicon
-cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../../toolchain/ios.toolchain.cmake -DPLATFORM=MAC_ARM64 ..
-## for Mac Intel
-cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../../toolchain/ios.toolchain.cmake -DPLATFORM=MAC ..
-
-# Build
-cmake --build . --config Debug
-```
-
-### Android
-Open the directory `src/android/java` in Android Studio.
-
-### Windows
-You need install and config Cmake and MinGW64 by yourself.
-```shell
-cd src
-mkdir build
-cd build
-
-# Generate project
-cmake -G "MinGW Makefiles" ..
-
-# Build
-mingw32-make
-```
-### Linux (Test on ubuntu)
-
-```shell
-# install cmake 
-sudo apt-get install cmake pkg-config
-# install dependent lib
-sudo apt-get install mesa-utils libglu1-mesa-dev freeglut3-dev mesa-common-dev libglfw3-dev
-
-# start build
-cd src
-mkdir build
-cd build
-
-# Generate project
-cmake ..
-
-# Build
-make
-```
----
-
-### 🌵 App demo
-### iOS
-Refer to `examples/ios`
-### Mac
-Refer to `examples/mac`
-### Android
-Refer to `examples/android` or `src/android/java`
-### Window and Linux
-Refer to `examples/desktop` 
-
-The compilation method is the same as compiling the library.
-
-```shell
-cd examples
-mkdir build
-cd build
-
-# Generate project
-cmake -G "MinGW Makefiles" ..
-
-# Build
-mingw32-make
-```
-## 🏂 How to Use
-
-**Declear filters**
-
-```c++
-// video data input
-std::shared_ptr<SourceRawDataInput> source_raw_input_;
-// beauty filter
-std::shared_ptr<BeautyFaceFilter> beauty_face_filter_;
-// video data output 
-std::shared_ptr<TargetRawDataOutput> target_raw_output_;
-```
-**Create and link filters**
-
-```c++
- gpupixel::GPUPixelContext::getInstance()->runSync([&] {
-    // Create filter
-    source_raw_input_ = SourceRawDataInput::create();
-    target_raw_output_ = TargetRawDataOutput::create();
-    // Face Beauty Filter
-    beauty_face_filter_ = BeautyFaceFilter::create();
-    
-    // Add filter
-    source_raw_input_->addTarget(beauty_face_filter_)
-                     ->addTarget(target_raw_output_);
- }
-```
-
-**Input YUV420P or RGBA**
-
-```c++
-// ...
-// YUVI420
- source_raw_input_->uploadBytes(width,
-                                height, 
-                                bufferY,
-                                strideY, 
-                                bufferU, 
-                                strideU,
-                                bufferV, 
-                                strideV);
-// ...
-// bytes: RGBA data
- source_raw_input_->uploadBytes(bytes,
-                                width, 
-                                height, 
-                                stride);
-```
-
-**Output Data Callback**
-
-```c++
-// I420 callback
-target_raw_output_->setI420Callbck([=](const uint8_t *data, 
-                                        int width, 
-                                        int height, 
-                                        int64_t ts) {
-    size_t y_size = width * height;
-    const uint8_t *uData = data + y_size;
-    const uint8_t *vData = data + y_size + y_size / 4;
-    // Do something you want
-});
-
-// RGBA callback->
-target_raw_output_->setPixelsCallbck([=](const uint8_t *data, 
-                                        int width, 
-                                        int height, 
-                                        int64_t ts) {
-    size_t rgba_size = width * height*4;
-    // Do something you want
-});
-
-// Output data callbck
-```
-
-## 🌠 Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=pixpark/gpupixel&type=Date)](https://star-history.com/#pixpark/gpupixel&Date)
-
-## 🧑‍💻 Contributing
-Welcome to contribute code 👏🏻.
+Welcome to join us to make GPUPixel better by participating [discussions](https://github.com/pixpark/gpupixel/discussions), opening [issues](https://github.com/pixpark/gpupixel/issues/new/choose), submitting [PRs](https://github.com/pixpark/gpupixel/pulls).
 
 At the same time, please consider supporting GPUPixel by sharing it on social media and at events and conferences.
 
+## Contributors
 
-## 👜 Acknowledgement
+[![](https://opencollective.com/gpupixel/contributors.svg?width=890&button=false)](https://github.com/pixpark/gpupixel/graphs/contributors)
+
+## Acknowledgement
 ### Reference Project
 1. [GPUImage](https://github.com/BradLarson/GPUImage) 
 2. [CainCamera](https://github.com/CainKernel/CainCamera)

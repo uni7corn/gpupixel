@@ -1,14 +1,14 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
 #include "source_raw_data_input.h"
 #include "gpupixel_context.h"
 #include "util.h"
-
+#include "face_detector.h"
 USING_NS_GPUPIXEL
 
 const std::string kI420VertexShaderString = R"(
@@ -113,6 +113,7 @@ bool SourceRawDataInput::init() {
   }
 
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
   return true;
 }
 
@@ -121,8 +122,12 @@ void SourceRawDataInput::uploadBytes(const uint8_t* pixels,
                                      int height,
                                      int stride,
                                      int64_t ts) {
-  GPUPixelContext::getInstance()->runSync(
-      [=] { genTextureWithRGBA(pixels, width, height, stride, ts); });
+  GPUPixelContext::getInstance()->runSync([=] {
+    if(_face_detector) {
+      _face_detector->Detect(pixels, width, height, GPUPIXEL_MODE_FMT_VIDEO,GPUPIXEL_FRAME_TYPE_RGBA8888);
+    }
+    genTextureWithRGBA(pixels, width, height, stride, ts); 
+  });
 }
 
 void SourceRawDataInput::setRotation(RotationMode rotation) {
@@ -139,6 +144,10 @@ void SourceRawDataInput::uploadBytes(int width,
                                      int strideV,
                                      int64_t ts) {
   GPUPixelContext::getInstance()->runSync([=] {
+    if(_face_detector) {
+      _face_detector->Detect(dataY, width, height, GPUPIXEL_MODE_FMT_VIDEO, GPUPIXEL_FRAME_TYPE_YUVI420);
+    }
+
     genTextureWithI420(width, height, dataY, strideY, dataU, strideU, dataV,
                        strideV, ts);
   });

@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -16,8 +16,7 @@
 #include "weak_pixel_inclusion_filter.h"
 
 NS_GPUPIXEL_BEGIN
-
-class CannyEdgeDetectionFilter : public FilterGroup {
+class GPUPIXEL_API CannyEdgeDetectionFilter : public FilterGroup {
  public:
   static std::shared_ptr<CannyEdgeDetectionFilter> create();
   ~CannyEdgeDetectionFilter();

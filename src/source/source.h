@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -14,10 +14,12 @@
 #if defined(GPUPIXEL_IOS) || defined(GPUPIXEL_MAC)
 #import "gpupixel_target.h"
 #endif
-NS_GPUPIXEL_BEGIN
+#include "face_detector.h"
 
-class Filter;
-class Source {
+NS_GPUPIXEL_BEGIN
+class GPUPIXEL_API Filter;
+
+class GPUPIXEL_API Source {
  public:
   Source();
   virtual ~Source();
@@ -53,12 +55,13 @@ class Source {
       std::shared_ptr<Filter> upToFilter,
       int width = 0,
       int height = 0);
-
+  int RegLandmarkCallback(FaceDetectorCallback callback);
  protected:
   std::shared_ptr<Framebuffer> _framebuffer;
   RotationMode _outputRotation;
   std::map<std::shared_ptr<Target>, int> _targets;
   float _framebufferScale;
+  std::shared_ptr<FaceDetector> _face_detector;
 };
 
 NS_GPUPIXEL_END

@@ -1,18 +1,27 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
 package com.pixpark.gpupixel;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.opengl.GLSurfaceView;
 import android.graphics.PixelFormat;
 import android.os.Build;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+
 public class GPUPixel {
+
+    public interface GPUPixelLandmarkCallback {
+        public void onFaceLandmark(float[] landmarks);
+    }
     public static final int NoRotation = 0;
     public static final int RotateLeft = 1;
     public static final int RotateRight = 2;
@@ -22,6 +31,7 @@ public class GPUPixel {
     public static final int RotateRightFlipHorizontal = 6;
     public static final int Rotate180 = 7;
 
+    public static String resource_path;
     private GPUPixelRenderer mRenderer = null;
     private GLSurfaceView mGLSurfaceView = null;
     private int mGLSurfaceViewRenderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY;
@@ -42,6 +52,9 @@ public class GPUPixel {
 
     public boolean isInited() {
         return mRenderer != null;
+    }
+    public static void setContext(Context context) {
+        copyResource(context);
     }
 
     public void init() {
@@ -139,6 +152,58 @@ public class GPUPixel {
 
     static {
         System.loadLibrary("gpupixel");
+        System.loadLibrary("vnn_core");
+        System.loadLibrary("vnn_kit");
+        System.loadLibrary("vnn_face");
+    }
+
+    public static void copyResource(Context context) {
+        String exPath = context.getExternalFilesDir(null).getAbsolutePath();
+        copyAssetsToFiles(context, "resource", exPath + "/resource");
+        resource_path = exPath + "/resource";
+    }
+
+    public static String getResource_path() {
+        return resource_path;
+    }
+
+    public static void  copyAssetsToFiles(Context context, String oldPath, String newPath) {
+        try {
+            String fileNames[] = context.getAssets().list(oldPath);//获取assets目录下的所有文件及目录名
+            if (fileNames.length > 0) {//如果是目录
+                File file = new File(newPath);
+                if(!file.exists()) {
+                    file.mkdirs();//如果文件夹不存在，则递归
+                }
+                for (String fileName : fileNames) {
+                    String srcPath = oldPath + "/" + fileName;
+                    String dstPath = newPath+"/"+fileName;
+                    File f = new File(dstPath);
+                    if(f.exists()) continue;
+                    copyAssetsToFiles(context, srcPath, dstPath);
+                }
+
+            } else {//如果是文件
+                File file = new File(newPath);
+                if(!file.exists()) {
+                    InputStream is = context.getAssets().open(oldPath);
+                    FileOutputStream fos = new FileOutputStream(file);
+                    byte[] buffer = new byte[1024];
+                    int byteCount=0;
+                    while((byteCount=is.read(buffer))!=-1) {//循环从输入流读取 buffer字节
+                        fos.write(buffer, 0, byteCount);//将读取的输入流写入到输出流
+                    }
+                    fos.flush();//刷新缓冲区
+                    is.close();
+                    fos.close();
+                }
+
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+
+        }
     }
 
     // Filter
@@ -147,8 +212,8 @@ public class GPUPixel {
     public static native void nativeFilterFinalize(long classID);
     public static native void nativeFilterSetPropertyFloat(long classID, String property, float value);
     public static native void nativeFilterSetPropertyInt(long classID, String property, int value);
+    public static native void nativeFilterSetPropertyFloatArray(long classID, String property, float[] array);
     public static native void nativeFilterSetPropertyString(long classID, String prooerty, String value);
-
     // SourceImage
     public static native long nativeSourceImageNew();
     public static native void nativeSourceImageDestroy(final long classID);
@@ -168,8 +233,8 @@ public class GPUPixel {
 
     // Source
     public static native long nativeSourceAddTarget(final long classID, final long targetClassID, final int texID, final boolean isFilter);
-    public static native boolean nativeSourceRemoveTarget(final long classID, final long targetClassID, final boolean isFilter);
-    public static native boolean nativeSourceRemoveAllTargets(final long classID);
+    public static native void nativeSourceRemoveTarget(final long classID, final long targetClassID, final boolean isFilter);
+    public static native void nativeSourceRemoveAllTargets(final long classID);
     public static native boolean nativeSourceProceed(final long classID, final boolean bUpdateTargets);
     public static native int nativeSourceGetRotatedFramebuferWidth(final long classID);
     public static native int nativeSourceGetRotatedFramebuferHeight(final long classID);
@@ -188,5 +253,7 @@ public class GPUPixel {
 
     // utils
     public static native void nativeYUVtoRBGA(byte[] yuv, int width, int height, int[] out);
+
+    public static native void nativeSetLandmarkCallback(Object source, final long classID);
 
 }

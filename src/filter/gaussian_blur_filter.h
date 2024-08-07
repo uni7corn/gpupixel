@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -12,8 +12,7 @@
 #include "gaussian_blur_mono_filter.h"
 
 NS_GPUPIXEL_BEGIN
-
-class GaussianBlurFilter : public FilterGroup {
+class GPUPIXEL_API GaussianBlurFilter : public FilterGroup {
  public:
   virtual ~GaussianBlurFilter();
 

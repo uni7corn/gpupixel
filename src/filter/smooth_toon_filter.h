@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -13,8 +13,7 @@
 #include "toon_filter.h"
 
 NS_GPUPIXEL_BEGIN
-
-class SmoothToonFilter : public FilterGroup {
+class GPUPIXEL_API SmoothToonFilter : public FilterGroup {
  public:
   virtual ~SmoothToonFilter();
 

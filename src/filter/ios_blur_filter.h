@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -14,8 +14,7 @@
 #include "saturation_filter.h"
 
 NS_GPUPIXEL_BEGIN
-
-class IOSBlurFilter : public FilterGroup {
+class GPUPIXEL_API IOSBlurFilter : public FilterGroup {
  public:
   virtual ~IOSBlurFilter();
 

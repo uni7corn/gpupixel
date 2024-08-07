@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -16,8 +16,7 @@
 #endif
 
 NS_GPUPIXEL_BEGIN
-
-class SourceCamera : public Source {
+class GPUPIXEL_API SourceCamera : public Source {
  public:
   SourceCamera();
   virtual ~SourceCamera();

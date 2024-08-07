@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -12,8 +12,7 @@
 #include <vector>
 
 NS_GPUPIXEL_BEGIN
-
-typedef struct {
+GPUPIXEL_API typedef struct {
   GLenum minFilter;
   GLenum magFilter;
   GLenum wrapS;
@@ -23,7 +22,7 @@ typedef struct {
   GLenum type;
 } TextureAttributes;
 
-class Framebuffer {
+class GPUPIXEL_API Framebuffer {
  public:
   Framebuffer(
       int width,

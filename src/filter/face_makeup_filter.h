@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -12,14 +12,14 @@
 NS_GPUPIXEL_BEGIN
 class SourceImage;
 
-typedef struct {
+GPUPIXEL_API typedef struct {
   float x;
   float y;
   float width;
   float height;
 } FrameBounds;
 
-class FaceMakeupFilter : public Filter {
+class GPUPIXEL_API FaceMakeupFilter : public Filter {
  public:
   static std::shared_ptr<FaceMakeupFilter> create();
   ~FaceMakeupFilter();
@@ -27,16 +27,13 @@ class FaceMakeupFilter : public Filter {
   virtual bool proceed(bool bUpdateTargets = true,
                        int64_t frameTime = 0) override;
 
-  void setFaceLandmarks(const std::vector<float> landmarks);
-  
+ 
   inline void setBlendLevel(float level) { this->blend_level_ = level; }
-  void setImageTexture(std::shared_ptr<SourceImage> texture);
-
-  void setTextureBounds(FrameBounds bounds) { texture_bounds_ = bounds; }
-  void setHasFace(bool hasFace) { has_face_ = hasFace; }
-
+  void SetFaceLandmarks(std::vector<float> landmarks);
  protected:
   FaceMakeupFilter();
+  void setImageTexture(std::shared_ptr<SourceImage> texture);
+  void setTextureBounds(FrameBounds bounds) { texture_bounds_ = bounds; }
 
  private:
   std::vector<GLuint> getFaceIndexs();

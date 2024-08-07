@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -11,8 +11,7 @@
 #include "pixellation_filter.h"
 
 NS_GPUPIXEL_BEGIN
-
-class HalftoneFilter : public PixellationFilter {
+class GPUPIXEL_API HalftoneFilter : public PixellationFilter {
  public:
   static std::shared_ptr<HalftoneFilter> create();
   bool init();

@@ -1,13 +1,14 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
 #include "face_makeup_filter.h"
 #include "gpupixel_context.h"
 #include "source_image.h"
+#include "face_detector.h"
 
 NS_GPUPIXEL_BEGIN
 
@@ -21,9 +22,10 @@ const std::string FaceMakeupFilterVertexShaderString = R"(
       textureCoordinate = inputTextureCoordinate;
       textureCoordinate2 = position.xy * 0.5 + 0.5;  // landmark
     })";
-
+#if defined(GPUPIXEL_IOS) || defined(GPUPIXEL_ANDROID)
 const std::string FaceMakeupFilterFragmentShaderString = R"(
-    precision mediump float; varying highp vec2 textureCoordinate;
+    precision mediump float; 
+    varying highp vec2 textureCoordinate;
     varying highp vec2 textureCoordinate2;
     uniform sampler2D inputImageTexture;
     uniform sampler2D inputImageTexture2;  // mouth
@@ -90,7 +92,76 @@ const std::string FaceMakeupFilterFragmentShaderString = R"(
       gl_FragColor =
           vec4(bgColor.rgb * (1.0 - fgColor.a) + color.rgb * fgColor.a, 1.0);
     })";
+#elif defined(GPUPIXEL_MAC) || defined(GPUPIXEL_WIN) || defined(GPUPIXEL_LINUX)
+const std::string FaceMakeupFilterFragmentShaderString = R"(
+    varying vec2 textureCoordinate;
+    varying vec2 textureCoordinate2;
+    uniform sampler2D inputImageTexture;
+    uniform sampler2D inputImageTexture2;  // mouth
 
+    uniform float intensity;
+    uniform int blendMode;
+
+    float blendHardLight(float base, float blend) {
+      return blend < 0.5 ? (2.0 * base * blend)
+                         : (1.0 - 2.0 * (1.0 - base) * (1.0 - blend));
+    }
+
+    vec3 blendHardLight(vec3 base, vec3 blend) {
+      return vec3(blendHardLight(base.r, blend.r),
+                  blendHardLight(base.g, blend.g),
+                  blendHardLight(base.b, blend.b));
+    }
+
+    float blendSoftLight(float base, float blend) {
+      return (blend < 0.5) ? (base + (2.0 * blend - 1.0) * (base - base * base))
+                           : (base + (2.0 * blend - 1.0) * (sqrt(base) - base));
+    } vec3 blendSoftLight(vec3 base, vec3 blend) {
+      return vec3(blendSoftLight(base.r, blend.r),
+                  blendSoftLight(base.g, blend.g),
+                  blendSoftLight(base.b, blend.b));
+    }
+
+    vec3 blendMultiply(vec3 base, vec3 blend) { return base * blend; }
+
+    float blendOverlay(float base, float blend) {
+      return base < 0.5 ? (2.0 * base * blend)
+                        : (1.0 - 2.0 * (1.0 - base) * (1.0 - blend));
+    } vec3 blendOverlay(vec3 base, vec3 blend) {
+      return vec3(blendOverlay(base.r, blend.r), blendOverlay(base.g, blend.g),
+                  blendOverlay(base.b, blend.b));
+    }
+
+    vec3 blendFunc(vec3 base, vec3 blend, int blendMode) {
+      if (blendMode == 0) {
+        return blend;
+      } else if (blendMode == 15) {
+        return blendMultiply(base, blend);
+      } else if (blendMode == 17) {
+        return blendOverlay(base, blend);
+      } else if (blendMode == 22) {
+        return blendHardLight(base, blend);
+      }
+      return blend;
+    }
+
+    void main() {
+      vec4 fgColor = texture2D(inputImageTexture2, textureCoordinate);  // mouth
+      fgColor = fgColor * intensity;
+      vec4 bgColor = texture2D(inputImageTexture, textureCoordinate2);
+      if (fgColor.a == 0.0) {
+        gl_FragColor = bgColor;
+        return;
+      }
+
+      vec3 color = blendFunc(bgColor.rgb,
+                             clamp(fgColor.rgb * (1.0 / fgColor.a), 0.0, 1.0),
+                             blendMode);
+      //    color = color * intensity;
+      gl_FragColor =
+          vec4(bgColor.rgb * (1.0 - fgColor.a) + color.rgb * fgColor.a, 1.0);
+    })";
+#endif
 FaceMakeupFilter::FaceMakeupFilter() {}
 
 FaceMakeupFilter::~FaceMakeupFilter() {}
@@ -121,15 +192,20 @@ bool FaceMakeupFilter::init() {
   _filterTexCoordAttribute2 =
       _filterProgram2->getAttribLocation("inputTextureCoordinate");
 
+  registerProperty("blend_level", 0, "The smoothing of filter with range between -1 and 1.", [this](float& val) {
+      setBlendLevel(val);
+  });
+
+  std::vector<float> defaut;
+  registerProperty("face_landmark", defaut, "The face landmark of filter with range between -1 and 1.", [this](std::vector<float> val) {
+      SetFaceLandmarks(val);
+  });
   return true;
 }
 
-void FaceMakeupFilter::setImageTexture(std::shared_ptr<SourceImage> texture) {
-  image_texture_ = texture;
-}
-
-void FaceMakeupFilter::setFaceLandmarks(const std::vector<float> landmarks) {
+void FaceMakeupFilter::SetFaceLandmarks(std::vector<float> landmarks) {
   if (landmarks.size() == 0) {
+    has_face_ = false;
     return;
   }
   std::vector<float> vect;
@@ -137,7 +213,13 @@ void FaceMakeupFilter::setFaceLandmarks(const std::vector<float> landmarks) {
     vect.push_back(2 * it - 1);
   }
   face_land_marks_ = vect;
+  has_face_ = true;
 }
+
+void FaceMakeupFilter::setImageTexture(std::shared_ptr<SourceImage> texture) {
+  image_texture_ = texture;
+}
+
 
 bool FaceMakeupFilter::proceed(bool bUpdateTargets, int64_t frameTime) {
   static const GLfloat imageVertices[] = {

@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -14,8 +14,7 @@
 #include <string>
 
 NS_GPUPIXEL_BEGIN
-
-class GLProgram {
+class GPUPIXEL_API GLProgram {
  public:
   GLProgram();
   ~GLProgram();

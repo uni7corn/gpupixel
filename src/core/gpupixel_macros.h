@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -10,7 +10,7 @@
 #include <memory>
 
 // version
-#define GPUPIXEL_SDK_VERSION "v1.0.6"
+#define GPUPIXEL_SDK_VERSION "v1.2.2"
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
    //define something for Windows (32-bit and 64-bit, this part is common)
@@ -45,10 +45,11 @@
 #elif __linux__
     // linux
     #define GPUPIXEL_LINUX
+#elif __emscripten__
+  #define GPUPIXEL_LINUX
 #elif __unix__ // all unices not caught above
-#   error "Unknown compiler"
-    #define GPUPIXEL_UNIX
     // Unix
+    #define GPUPIXEL_LINUX
 #elif defined(_POSIX_VERSION)
     // POSIX
 #   error "Unknown compiler"
@@ -57,6 +58,17 @@
 #   error "Unknown compiler"
 #endif
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
+#ifndef GPUPIXEL_API
+  #ifdef GPUPIXEL_WIN
+    #define GPUPIXEL_API __declspec(dllexport)
+  #else
+    #define GPUPIXEL_API
+ #endif
+#endif
 //
 #if defined(GPUPIXEL_IOS)
   #import <OpenGLES/ES3/gl.h>

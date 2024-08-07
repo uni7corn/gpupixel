@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -49,7 +49,11 @@ void SourceCamera::setFrameData(
         GPUPixelContext::getInstance()->getFramebufferCache()->fetchFramebuffer(
             width, height, true);
   }
-
+  if(_face_detector) {
+      _face_detector->Detect(static_cast<const uint8_t *>(pixels), width, height,
+                             GPUPIXEL_MODE_FMT_VIDEO,
+                             GPUPIXEL_FRAME_TYPE_RGBA8888);
+  }
   this->setFramebuffer(_framebuffer, outputRotation);
 
   CHECK_GL(glBindTexture(GL_TEXTURE_2D, this->getFramebuffer()->getTexture()));

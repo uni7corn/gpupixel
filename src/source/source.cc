@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -135,6 +135,15 @@ int Source::getRotatedFramebufferWidth() const {
   } else {
     return 0;
   }
+}
+ 
+int Source::RegLandmarkCallback(FaceDetectorCallback callback) {
+  if(_face_detector == nullptr) {
+    // init face detector
+    _face_detector = std::make_shared<FaceDetector>();
+  }
+
+  return _face_detector->RegCallback(callback);
 }
 
 int Source::getRotatedFramebufferHeight() const {

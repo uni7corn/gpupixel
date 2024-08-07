@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -13,7 +13,7 @@
 NS_GPUPIXEL_BEGIN
 class SourceImage;
 
-class BeautyFaceUnitFilter : public Filter {
+class GPUPIXEL_API BeautyFaceUnitFilter : public Filter {
  public:
   static std::shared_ptr<BeautyFaceUnitFilter> create();
   ~BeautyFaceUnitFilter();

@@ -1,7 +1,7 @@
 /*
  * GPUPixel
  *
- * Created by gezhaoyou on 2021/6/24.
+ * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
@@ -11,8 +11,7 @@
 #include "gpupixel_macros.h"
 
 NS_GPUPIXEL_BEGIN
-
-class CrosshatchFilter : public Filter {
+class GPUPIXEL_API CrosshatchFilter : public Filter {
  public:
   static std::shared_ptr<CrosshatchFilter> create();
   bool init();
